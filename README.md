@@ -1,4 +1,4 @@
-#A Udacity FSND project.
+# A Udacity FSND project.
 
 
 ## logs analysis project
@@ -10,8 +10,11 @@ The program in this project will run from the command line. It won't take any in
 
 ## What you need to RUN?
 1/ Vagrant:	https://www.vagrantup.com/downloads.htmlb.VirtualMachine
+
 2/ VirtualMachine:	https://www.virtualbox.org/wiki/Downloadsc.Download
+
 3/ Download	a	FSND	VirtualMachine https://github.com/udacity/fullstack-nanodegree-vm
+
 4/ Python https://www.python.org
 
 ## How to RUN the Project
