@@ -9,11 +9,9 @@ cursor = connection.cursor()
 
 def popularArticle():
     query = """
-            SELECT articles.title,
-                   count(*)
-            FROM   log,
-                   articles
-            WHERE  log.path = '/article/' || articles.slug
+            SELECT articles.title, count(*)
+            From articles JOIN log
+            ON CONCAT('/article/', articles.slug) = log.path
             GROUP BY articles.title
             ORDER BY count(*) DESC
             LIMIT 3;
@@ -27,16 +25,14 @@ def popularArticle():
 
 def popularAuthors():
     query = """
-            SELECT authors.name,
-                   count(*)
-            FROM   log,
-                   articles,
-                   authors
-            WHERE  log.path = '/article/' || articles.slug
-              AND articles.author = authors.id
-            GROUP BY authors.name
-            ORDER BY count(*) DESC
-            LIMIT 3;
+      	          SELECT authors.name, count(*)
+                  FROM articles
+                  JOIN authors
+                  ON authors.id = articles.author
+                  JOIN log
+      	          ON CONCAT('/article/', articles.slug) = log.path
+                  GROUP BY authors.name
+                  ORDER BY count(*) DESC
     """
     cursor.execute(query)
     return cursor.fetchall()
