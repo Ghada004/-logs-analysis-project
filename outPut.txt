@@ -5,7 +5,7 @@ The most three popular articles:
  Bad things gone, say good people - 170098 views
 
 The most popular author:
- Ursula La Multa - 507594 views
+
 
 The days with error rate higher than 1%:
  July 17, 2016 - 2.3%
