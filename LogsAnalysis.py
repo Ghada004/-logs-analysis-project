@@ -43,25 +43,7 @@ def popularAuthors():
 
 def errorsRequests():
     query = """
-            WITH num_requests AS (
-                SELECT time::date AS day, count(*)
-                FROM log
-                GROUP BY time::date
-                ORDER BY time::date
-              ), num_errors AS (
-                SELECT time::date AS day, count(*)
-                FROM log
-                WHERE status != '200 OK'
-                GROUP BY time::date
-                ORDER BY time::date
-              ), error_rate AS (
-                SELECT num_requests.day,
-                  num_errors.count::float / num_requests.count::float * 100
-                  AS error_pc
-                FROM num_requests, num_errors
-                WHERE num_requests.day = num_errors.day
-              )
-            SELECT * FROM error_rate WHERE error_pc > 1;
+
     """
     cursor.execute(query)
     return cursor.fetchall()
