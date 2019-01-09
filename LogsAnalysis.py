@@ -4,8 +4,8 @@ import psycopg2
 connection = psycopg2.connect("dbname=news")
 cursor = connection.cursor()
 
-# The most popular article authors of all time
 
+# The most popular three articles of all time
 
 def popularArticle():
     query = """
@@ -20,8 +20,8 @@ def popularArticle():
     return cursor.fetchall()
     db.close()
 
-# The most popular article authors of all time
 
+# The most popular article authors of all time
 
 def popularAuthors():
     query = """
@@ -38,32 +38,37 @@ def popularAuthors():
     return cursor.fetchall()
     db.close()
 
-# On which days did more than 1% of requests lead to errors
 
+# On which days did more than 1% of requests lead to errors
 
 def errorsRequests():
     query = """
-
+    SELECT *
+    FROM errPercentage0
+     WHERE errPercentage0.percentage > 1
+     ORDER BY errPercentage0.percentage DESC;
     """
+
     cursor.execute(query)
     return cursor.fetchall()
     db.close()
 
 # Print out put
 
-result01 = popularArticle()
-result02 = popularAuthors()
-result03 = errorsRequests()
+query01 = popularArticle()
+query02 = popularAuthors()
+query03 = errorsRequests()
+
 
 print(
-    'The most three popular articles:')
-for(title, count) in result01:
+    '\nMost three popular articles:')
+for(title, count) in query01:
     print(" {} - {} views".format(title.replace('-', ' ').capitalize(), count))
 
 print(
-    '\nThe most popular author:\n' +
-    ' %s - %d views\n' % (result02[0][0], result02[0][1]))
+    '\nMost popular author:\n' +
+    ' %s - %d views\n' % (query02[0][0], query02[0][1]))
 
 print(
-    'The days with error rate higher than 1'+'%:\n' + ' %s - %0.1f'
-    % (result03[0][0].strftime('%B %d, %Y'), result03[0][1])+'%\n')
+    '\nDays with more than one percentage of bad requests:')
+print((str(query03[0][1])) + ' - ' + str(query03[0][2]) + ' %')
