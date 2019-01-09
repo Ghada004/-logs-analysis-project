@@ -17,9 +17,55 @@ The program in this project will run from the command line. It won't take any in
 
 4/ Python https://www.python.org
 
+## Database file
+
+Download the newsdata.sql https://www.dropbox.com/s/dwwdrerml1nf0mf/newsdata.sql?dl=0
+
 ## How to RUN the Project
 ```
 cd / vagrant
 cd log-analysis-project
 python3 LogsAnalysis.py
 ```
+### To load the data, cd into the vagrant directory and use the command psql -d news -f newsdata.sql.
+### Here's what this command does:
+```
+
+psql — the PostgreSQL command line program
+-d news — connect to the database named news which has been set up for you
+-f newsdata.sql — run the SQL statements in the file newsdata.sql
+```
+
+### I used CREATE VIEW for The last Query.
+## The third Query Views
+
+#1 
+
+```python
+CREATE VIEW allLogs AS
+SELECT time::date, COUNT(*) AS logs
+FROM log
+GROUP BY time::date
+ORDER BY time::date;
+```
+#2 
+
+```python
+CREATE VIEW errLogs AS
+SELECT time::date, COUNT(*) AS errs
+FROM log WHERE status = '404 NOT FOUND'
+GROUP BY time::date
+ORDER BY time::date;
+```
+
+#3 
+
+```python
+CREATE VIEW errPercentage0
+AS SELECT allLogs.logs , allLogs.time , (100.0*errLogs.errs/allLogs.logs) AS percentage
+FROM allLogs, errLogs, log 
+WHERE allLogs.time  = errLogs.time 
+ORDER BY allLogs.time
+
+```
+
