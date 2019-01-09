@@ -25,14 +25,14 @@ def popularArticle():
 
 def popularAuthors():
     query = """
-      	          SELECT authors.name, count(*)
-                  FROM articles
-                  JOIN authors
-                  ON authors.id = articles.author
-                  JOIN log
-      	          ON CONCAT('/article/', articles.slug) = log.path
-                  GROUP BY authors.name
-                  ORDER BY count(*) DESC
+             SELECT authors.name, count(*)
+             FROM articles
+             JOIN authors
+             ON authors.id = articles.author
+             JOIN log
+             ON CONCAT('/article/', articles.slug) = log.path
+             GROUP BY authors.name
+             ORDER BY count(*) DESC
     """
     cursor.execute(query)
     return cursor.fetchall()
@@ -54,6 +54,7 @@ def errorsRequests():
     db.close()
 
 # Print out put
+
 
 query01 = popularArticle()
 query02 = popularAuthors()
