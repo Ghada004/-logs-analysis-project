@@ -1,4 +1,5 @@
-import psycopg2
+#!/usr/bin/env python
+psycopg2
 from datetime import datetime
 
 
