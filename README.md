@@ -23,20 +23,35 @@ Download the newsdata.sql https://www.dropbox.com/s/dwwdrerml1nf0mf/newsdata.sql
 
 ## How to RUN the Project
 ```
-cd / vagrant
+cd vagrant
+vagrant up
+vagrant ssh
+cd /vagrant
 cd log-analysis-project
-python3 LogsAnalysis.py
+python LogsAnalysis.py
 ```
 ### To load the data, cd into the vagrant directory and use the command psql -d news -f newsdata.sql.
 ### Here's what this command does:
 ```
-
 psql — the PostgreSQL command line program
 -d news — connect to the database named news which has been set up for you
 -f newsdata.sql — run the SQL statements in the file newsdata.sql
 ```
 
 ### I used CREATE VIEW for The last Query.
+##  How to access Database to CREATE VIEW  
+
+## Once you have the data loaded into your database, connect to your database using:
+```
+psql -d news
+```
+
+## You can Explore the Data by:
+```
+ \dt: display tables — lists the tables that are available in the database 
+ \d table_name: shows the database schema for that particular table
+```
+
 ## The third Query Views
 
 #1 
