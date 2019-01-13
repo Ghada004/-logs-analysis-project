@@ -1,4 +1,6 @@
 import psycopg2
+from datetime import datetime
+
 
 # Connect to database and setup cursor
 connection = psycopg2.connect("dbname=news")
@@ -8,7 +10,7 @@ cursor = connection.cursor()
 # The most popular three articles of all time
 
 def popularArticle():
-    query = """
+    query1 = """
             SELECT articles.title, count(*)
             From articles JOIN log
             ON CONCAT('/article/', articles.slug) = log.path
@@ -16,15 +18,15 @@ def popularArticle():
             ORDER BY count(*) DESC
             LIMIT 3;
     """
-    cursor.execute(query)
-    return cursor.fetchall()
-    db.close()
+    cursor.execute(query1)
+    print("\nMost three popular articles:\n")
+    for(title, count) in cursor.fetchall():
+        print(" {} - {} views".format(title, count))
 
 
 # The most popular article authors of all time
-
 def popularAuthors():
-    query = """
+    query2 = """
              SELECT authors.name, count(*)
              FROM articles
              JOIN authors
@@ -34,42 +36,32 @@ def popularAuthors():
              GROUP BY authors.name
              ORDER BY count(*) DESC
     """
-    cursor.execute(query)
-    return cursor.fetchall()
-    db.close()
+    cursor.execute(query2)
+    print("\nMost popular author:\n")
+    for(name, count) in cursor.fetchall():
+        print(" {} - {} views".format(name, count))
 
 
 # On which days did more than 1% of requests lead to errors
-
 def errorsRequests():
-    query = """
+
+    query3 = """
     SELECT *
     FROM errPercentage0
      WHERE errPercentage0.percentage > 1
-     ORDER BY errPercentage0.percentage DESC;
+     ORDER BY errPercentage0.percentage DESC
+     LIMIT 1;
     """
+    cursor.execute(query3)
+    print("\nDays with more than one percentage of bad requests:\n")
+    for q3 in cursor.fetchall():
+        print((q3[1]).strftime("%B %d, %Y") + " - " + str(q3[2]) + " % errors")
 
-    cursor.execute(query)
-    return cursor.fetchall()
-    db.close()
-
-# Print out put
-
-
-query01 = popularArticle()
-query02 = popularAuthors()
-query03 = errorsRequests()
+    connection.close()
+    cursor.close()
 
 
-print(
-    '\nMost three popular articles:')
-for(title, count) in query01:
-    print(" {} - {} views".format(title.replace('-', ' ').capitalize(), count))
-
-print(
-    '\nMost popular author:\n' +
-    ' %s - %d views\n' % (query02[0][0], query02[0][1]))
-
-print(
-    '\nDays with more than one percentage of bad requests:')
-print((str(query03[0][1])) + ' - ' + str(query03[0][2]) + ' %')
+if __name__ == '__main__':
+    popularArticle()
+    popularAuthors()
+    errorsRequests()
